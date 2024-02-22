@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "AlBEaEuUZcBGrsfD764F8M8jD0jJT6ne2VQHiwWEhsS+Hkdbn0o2BdBtbOh4lPi1nyfv++fC8i+OCwV/aJpwEw==",
+  "success": true,
+  "projectFilePath": "/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.API/Bosai.Interview.API.csproj",
+  "expectedPackageFiles": [
+    "/Users/michael.zheng@homepartners.tech/.nuget/packages/microsoft.aspnetcore.openapi/7.0.7/microsoft.aspnetcore.openapi.7.0.7.nupkg.sha512",
+    "/Users/michael.zheng@homepartners.tech/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/michael.zheng@homepartners.tech/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/michael.zheng@homepartners.tech/.nuget/packages/swashbuckle.aspnetcore/6.5.0/swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "/Users/michael.zheng@homepartners.tech/.nuget/packages/swashbuckle.aspnetcore.swagger/6.5.0/swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "/Users/michael.zheng@homepartners.tech/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "/Users/michael.zheng@homepartners.tech/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.5.0/swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

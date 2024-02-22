@@ -1,0 +1,63 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Repository/Bosai.Interview.Repository.csproj": {}
+  },
+  "projects": {
+    "/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Repository/Bosai.Interview.Repository.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Repository/Bosai.Interview.Repository.csproj",
+        "projectName": "Bosai.Interview.Repository",
+        "projectPath": "/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Repository/Bosai.Interview.Repository.csproj",
+        "packagesPath": "/Users/michael.zheng@homepartners.tech/.nuget/packages/",
+        "outputPath": "/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Repository/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/michael.zheng@homepartners.tech/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nexus.infra.homepartners.com/repository/nuget-hosted/index.json": {},
+          "https://service.homepartners.com/nuget": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.304/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

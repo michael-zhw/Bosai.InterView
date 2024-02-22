@@ -1,0 +1,15 @@
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/bin/Debug/net7.0/Bosai.Interview.Service.Contracts.deps.json
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/bin/Debug/net7.0/Bosai.Interview.Service.Contracts.dll
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/bin/Debug/net7.0/Bosai.Interview.Service.Contracts.pdb
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/bin/Debug/net7.0/Bosai.Interview.Entity.dll
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/bin/Debug/net7.0/Bosai.Interview.Entity.pdb
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.csproj.AssemblyReference.cache
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.AssemblyInfoInputs.cache
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.AssemblyInfo.cs
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.csproj.CoreCompileInputs.cache
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.csproj.CopyComplete
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.dll
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/refint/Bosai.Interview.Service.Contracts.dll
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/Bosai.Interview.Service.Contracts.pdb
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Service.Contracts/obj/Debug/net7.0/ref/Bosai.Interview.Service.Contracts.dll

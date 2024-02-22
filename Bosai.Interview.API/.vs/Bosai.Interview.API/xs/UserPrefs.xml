@@ -1,0 +1,47 @@
+﻿<Properties StartupConfiguration="{EB492E86-4D54-48FE-900D-0E59E07DE55B}|https">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Bosai.Interview.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bosai.Interview.Service.Contracts/Leaderboard/ILeaderboardService.cs">
+    <Files>
+      <File FileName="Bosai.Interview.API/Program.cs" />
+      <File FileName="Bosai.Interview.API/appsettings.Development.json" />
+      <File FileName="Bosai.Interview.Entity/Customer.cs" />
+      <File FileName="Bosai.Interview.API/Controllers/CustomerController.cs" Line="30" Column="36" />
+      <File FileName="Bosai.Interview.Entity/Leaderboard.cs" />
+      <File FileName="Bosai.Interview.Service/Leaderboard/LeaderboardService.cs" Line="100" Column="14" />
+      <File FileName="Bosai.Interview.Service.Contracts/Leaderboard/ILeaderboardService.cs" Line="12" Column="48" />
+      <File FileName="Bosai.Interview.Service.Contracts/Leaderboard/Dto/UpdateScoreRequest.cs" />
+      <File FileName="Bosai.Interview.API/Controllers/LeaderBoardController.cs" Line="29" Column="63" />
+      <File FileName="Bosai.Interview.Service.Contracts/Leaderboard/Dto/GetCustomersRequest.cs" />
+      <File FileName="Bosai.Interview.Service.Contracts/Leaderboard/Dto/GetCustomersByRankRequest.cs" Line="9" Column="21" />
+      <File FileName="Bosai.Interview.API/appsettings.json" />
+      <File FileName="Bosai.Interview.API/Properties/launchSettings.json" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Bosai.Interview.API" expanded="True" selected="True">
+            <Node name="Bosai.Interview.API" expanded="True">
+              <Node name="Dependencies" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+            </Node>
+            <Node name="Bosai.Interview.Entity" expanded="True" />
+            <Node name="Bosai.Interview.Service" expanded="True">
+              <Node name="Leaderboard" expanded="True" />
+            </Node>
+            <Node name="Bosai.Interview.Service.Contracts" expanded="True">
+              <Node name="Leaderboard" expanded="True">
+                <Node name="Dto" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

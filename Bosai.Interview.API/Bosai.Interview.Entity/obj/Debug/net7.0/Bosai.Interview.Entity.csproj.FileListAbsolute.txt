@@ -1,0 +1,12 @@
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/bin/Debug/net7.0/Bosai.Interview.Entity.deps.json
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/bin/Debug/net7.0/Bosai.Interview.Entity.dll
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/bin/Debug/net7.0/Bosai.Interview.Entity.pdb
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/Bosai.Interview.Entity.csproj.AssemblyReference.cache
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/Bosai.Interview.Entity.GeneratedMSBuildEditorConfig.editorconfig
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/Bosai.Interview.Entity.AssemblyInfoInputs.cache
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/Bosai.Interview.Entity.AssemblyInfo.cs
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/Bosai.Interview.Entity.csproj.CoreCompileInputs.cache
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/Bosai.Interview.Entity.dll
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/refint/Bosai.Interview.Entity.dll
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/Bosai.Interview.Entity.pdb
+/Users/michael.zheng@homepartners.tech/Desktop/Interview/Bosai.Interview.API/Bosai.Interview.Entity/obj/Debug/net7.0/ref/Bosai.Interview.Entity.dll

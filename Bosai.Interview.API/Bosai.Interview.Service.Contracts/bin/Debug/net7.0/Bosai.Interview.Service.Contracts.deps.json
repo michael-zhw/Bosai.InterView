@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "Bosai.Interview.Service.Contracts/1.0.0": {
+        "dependencies": {
+          "Bosai.Interview.Entity": "1.0.0"
+        },
+        "runtime": {
+          "Bosai.Interview.Service.Contracts.dll": {}
+        }
+      },
+      "Bosai.Interview.Entity/1.0.0": {
+        "runtime": {
+          "Bosai.Interview.Entity.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Bosai.Interview.Service.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Bosai.Interview.Entity/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
