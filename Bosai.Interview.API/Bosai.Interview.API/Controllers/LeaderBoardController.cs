@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bosai.Interview.Service.Contracts.Leaderboard;
 using Bosai.Interview.Service.Contracts.Leaderboard.Dto;
+using Bosai.Interview.Service.Leaderboard;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,10 +18,12 @@ namespace Bosai.Interview.API.Controllers
     {
         private readonly ILogger<LeaderBoardController> _logger;
         private readonly ILeaderboardService _leaderboardService;
-        public LeaderBoardController(ILogger<LeaderBoardController> logger, ILeaderboardService leaderboardService)
+        private readonly ScoreUpdateProcessor _processor;
+        public LeaderBoardController(ILogger<LeaderBoardController> logger, ILeaderboardService leaderboardService,ScoreUpdateProcessor processor)
         {
             _logger = logger;
             _leaderboardService = leaderboardService;
+            _processor = processor;
         }
 
         [HttpGet]
@@ -49,6 +52,13 @@ namespace Bosai.Interview.API.Controllers
             {
                 return new BadRequestResult();
             }
+        }
+
+        [HttpPost("open/queue")]
+        public IActionResult StartUpdateProcessing()
+        {
+            _processor.StartProcessing();
+            return Ok();
         }
     }
 }

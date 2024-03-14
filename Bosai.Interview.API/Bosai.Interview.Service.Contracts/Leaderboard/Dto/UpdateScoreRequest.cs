@@ -10,6 +10,6 @@ namespace Bosai.Interview.Service.Contracts.Leaderboard.Dto
 
         [Required]
         [Range(-1000, 1000, ErrorMessage = "Score must be between -1000 and 1000")]
-        public decimal score { get; set; }
+        public double score { get; set; }
     }
 }

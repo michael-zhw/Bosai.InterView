@@ -13,6 +13,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ILeaderboardService, LeaderboardService>();
 
+//Injection queue service
+builder.Services.AddSingleton<ScoreUpdateQueue>();
+builder.Services.AddSingleton<ScoreUpdateProcessor>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

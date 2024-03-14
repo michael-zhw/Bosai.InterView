@@ -4,7 +4,6 @@ namespace Bosai.Interview.Entity
     public class Customer
     {
         public long CustomerId { get; set; }
-        public decimal Score { get; set; } = 0.0M;
+        public double Score { get; set; }
     }
 }
-

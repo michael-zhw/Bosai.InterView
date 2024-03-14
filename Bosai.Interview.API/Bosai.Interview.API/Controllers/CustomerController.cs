@@ -38,12 +38,12 @@ namespace Bosai.Interview.API.Controllers
             }
         }
 
-        //[HttpGet("all")]
-        //public async Task<ActionResult> GetAllCustomers()
-        //{
-        //    var result = await _leaderboardService.GetAllCustomers();
-        //    return Ok(result);
-        //}
+        [HttpGet("all")]
+        public async Task<ActionResult> GetLeaderboard()
+        {
+            var result = await _leaderboardService.GetLeaderboard();
+            return Ok(result);
+        }
     }
 }
 

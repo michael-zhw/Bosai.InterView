@@ -1,47 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bosai.Interview.Entity;
+using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using Bosai.Interview.Service.Contracts.Leaderboard;
 using Bosai.Interview.Service.Contracts.Leaderboard.Dto;
 
 namespace Bosai.Interview.Service.Leaderboard
 {
+    /// <summary>
+    /// Leaderboard handler
+    /// </summary>
     public class LeaderboardService : ILeaderboardService
     {
-        private readonly List<Customer> _customers = new();
-        private readonly List<Customer> _leaderboard = new();
+        private readonly ConcurrentDictionary<long, ScoreCustomerKey> _customerScores;
+        private readonly SortedDictionary<ScoreCustomerKey, (long CustomerId, double Score)> _leaderboard;
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-        public LeaderboardService() { }
+        private readonly ScoreUpdateQueue _scoreQueue;
+        public LeaderboardService()
+        {
+            _customerScores = new ConcurrentDictionary<long, ScoreCustomerKey>();
+            _leaderboard = new SortedDictionary<ScoreCustomerKey, (long CustomerId, double Score)>();
+            _scoreQueue = new ScoreUpdateQueue();
+        }
 
         /// <summary>
-        /// Use insertion sort
+        /// Update Customer Score
         /// </summary>
         /// <param name="customer"></param>
         /// <returns></returns>
-        public async Task UpdateRank(Customer customer)
+        public async Task<double> UpdateScore(UpdateScoreRequest customer)
         {
             _lock.EnterWriteLock();
             try
             {
-                var existCustomers = _leaderboard.FirstOrDefault(t => t.CustomerId == customer.CustomerId);
-                if (existCustomers != null)
-                {
-                    //update score
-                    existCustomers.Score = customer.Score;
-                    _leaderboard.Remove(existCustomers);
-                }
+                var scoreKey = new ScoreCustomerKey(customer.score, customer.customerid);
 
-                int i = _leaderboard.Count - 1;
-                //Adds to the end of the list
-                _leaderboard.Add(customer);
-
-                //Use insertion sort logic to move new customers to the correct location
-                while (i >= 0 && (_leaderboard[i].Score < customer.Score || (_leaderboard[i].Score == customer.Score && _leaderboard[i].CustomerId > customer.CustomerId)))
+                //if customer exists then update score
+                if (_customerScores.TryGetValue(customer.customerid, out ScoreCustomerKey? currentScoreKey))
                 {
-                    _leaderboard[i + 1] = _leaderboard[i];
-                    i--;
+                    if (customer.score != currentScoreKey.Score)
+                    {
+                        _customerScores[customer.customerid] = scoreKey;
+                        await UpdateLeaderboard(customer.customerid, scoreKey);
+                    }
                 }
-                _leaderboard[i + 1] = customer;
+                else
+                {
+                    _customerScores.TryAdd(customer.customerid, scoreKey);
+                    //Update Leaderboard
+                    await UpdateLeaderboard(customer.customerid, scoreKey);
+                }
+                return scoreKey.Score;
             }
             finally
             {
@@ -49,26 +58,19 @@ namespace Bosai.Interview.Service.Leaderboard
             }
         }
 
-        /// <summary>
-        /// Update customer score
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<decimal> UpdateScore(UpdateScoreRequest request)
+        public async Task UpdateLeaderboard(long customerId, ScoreCustomerKey scoreKey)
         {
-            var customer = _customers.FirstOrDefault(t => t.CustomerId == request.customerid);
-            if (customer == null)
+            if (_leaderboard.ContainsKey(scoreKey))
             {
-                customer = new Entity.Customer { CustomerId = request.customerid, Score = request.score };
-                _customers.Add(customer);
+                _leaderboard.Remove(scoreKey);
             }
-            else
-            {
-                customer.Score += request.score;
-            }
-            await UpdateRank(customer);
-            return customer.Score;
 
+            if (scoreKey.Score > 0)
+            {
+                //Insert Queue
+                _scoreQueue.EnqueueUpdate(scoreKey.CustomerId, scoreKey.Score);
+                _leaderboard.Add(scoreKey, (customerId, scoreKey.Score));
+            }
         }
 
         /// <summary>
@@ -76,24 +78,47 @@ namespace Bosai.Interview.Service.Leaderboard
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<Entity.Customer>> GetCustomersByRank(GetCustomersByRankRequest request)
+        public async Task<List<GetLeaderboardResponse>> GetCustomersByRank(GetCustomersByRankRequest request)
         {
             if (request.Start.HasValue && request.End.HasValue)
             {
+                var leaderboardCount = _leaderboard.Count;
+                if (request.Start > leaderboardCount)
+                    return new List<GetLeaderboardResponse>();
+                int rank = request.Start.Value;
                 _lock.EnterReadLock();
                 try
                 {
-                    int startIndex = request.Start.Value - 1;
-                    int endIndex = request.End > _leaderboard.Count ? _leaderboard.Count : request.End.Value - 1;
-                    var customerInRange = _leaderboard.Skip(startIndex).Take(endIndex - startIndex + 1).ToList();
-                    return customerInRange;
+                    // Calculate the actual score range
+                    var startScore = _leaderboard.Keys.ElementAt(leaderboardCount - request.Start.Value);
+
+                    var endCount = request.End.Value > leaderboardCount ? 0 : leaderboardCount - request.End.Value;
+                    var endScore = _leaderboard.Keys.ElementAt(endCount);
+
+                    // Gets customer scores for the specified ranking range
+                    var rankedScores = _leaderboard.Keys.Where(score => score.Score >= endScore.Score && score.Score <= startScore.Score).ToList();
+
+                    // Get customer information and return it in ranking order
+                    var result = rankedScores.Select(x => new GetLeaderboardResponse
+                    {
+                        CustomerId = _leaderboard[x].CustomerId,
+                        Score = x.Score
+                    }).Reverse().ToList();
+
+
+                    foreach (var item in result)
+                    {
+                        item.Rank = rank;
+                        rank++;
+                    }
+                    return result;
                 }
                 finally
                 {
                     _lock.ExitReadLock();
                 }
             }
-            return new List<Customer>();
+            return new List<GetLeaderboardResponse>();
         }
 
         /// <summary>
@@ -102,38 +127,74 @@ namespace Bosai.Interview.Service.Leaderboard
         /// <param name="customerId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<List<Entity.Customer>> GetCustomersByCustomerId(long customerId, GetCustomersRequest request)
+        public async Task<List<GetLeaderboardResponse>> GetCustomersByCustomerId(long customerId, GetCustomersRequest request)
         {
-            var customers = new List<Customer>();
-            _lock.EnterReadLock();
-            try
+            var neighbors = new List<GetLeaderboardResponse>();
+            if (!_customerScores.TryGetValue(customerId, out ScoreCustomerKey? customerScoreKey))
             {
-                int index = _leaderboard.FindIndex(c => c.CustomerId == customerId);
-                if (index <= -1)
+                return neighbors;
+            }
+
+            if (_customerScores.TryGetValue(customerId, out ScoreCustomerKey? scoreKey))
+            {
+                // if customers exist, get their scores and rankings
+                if (_leaderboard.TryGetValue(scoreKey, out var leaderboardEntry))
                 {
-                    return new List<Customer>();
+                    var leaderboard = _leaderboard.Keys.Reverse().ToList();
+
+                    var index = leaderboard.IndexOf(scoreKey);
+                    if (index != -1)
+                    {
+                        var topItems = new List<ScoreCustomerKey>();
+                        var bottomItems = new List<ScoreCustomerKey>();
+
+                        // Calculates where in the array you need to start fetching elements
+                        int startIdx = Math.Max(0, index - request.High);
+                        // Calculate how many elements you need to take
+                        int countToTake = Math.Min(index, request.High);
+
+                        topItems.AddRange(leaderboard.Skip(startIdx).Take(countToTake));
+
+                        //Calculates the lowest index of the element to be extracted, ensuring that it does not exceed the lower bound of the array
+                        int lowAdjustedForCount = Math.Min(_leaderboard.Count - index - 1, request.Low);
+                        int lowCountToTake = Math.Min(lowAdjustedForCount + 1, _leaderboard.Count - index);
+
+                        var bottomItemsSubset = leaderboard.Skip(index).Take(lowCountToTake);
+
+                        bottomItems.AddRange(bottomItemsSubset);
+
+                        foreach (var entry in topItems.Concat(bottomItems))
+                        {
+                            neighbors.Add(new GetLeaderboardResponse { CustomerId = entry.CustomerId, Score = entry.Score, Rank = leaderboard.IndexOf(entry) + 1 });
+                        }
+                    }
                 }
-
-                var targetCustomer = _leaderboard[index];
-                var highRankingNeighborsStartIndex = Math.Max(0, index - request.High);
-                var highRankCustomers = _leaderboard.Skip(highRankingNeighborsStartIndex).Take(index - highRankingNeighborsStartIndex).ToList();
-                var lowRankingNeighbors = _leaderboard.Skip(index + 1).Take(request.Low).ToList();
-
-                customers.AddRange(highRankCustomers);
-                customers.Add(targetCustomer);
-                customers.AddRange(lowRankingNeighbors);
-
-                return customers;
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            return neighbors;
         }
 
-        public async Task<List<Customer>> GetAllCustomers()
+        public async Task<GetLeaderboardResponse> GetCustomerRank(long customerID)
         {
-            return _leaderboard.ToList();
+            if (_customerScores.TryGetValue(customerID, out ScoreCustomerKey scoreKey))
+            {
+                // Customers exist, get their scores and rankings
+                if (_leaderboard.TryGetValue(scoreKey, out var leaderboardEntry))
+                {
+                    return new GetLeaderboardResponse { CustomerId = leaderboardEntry.CustomerId, Score = scoreKey.Score, Rank = _leaderboard.Keys.ToList().IndexOf(scoreKey) + 1 };
+                }
+            }
+            return new GetLeaderboardResponse();
+        }
+
+
+        public async Task<List<GetLeaderboardResponse>> GetLeaderboard()
+        {
+            var leaderboard = new List<GetLeaderboardResponse>();
+            foreach (var item in _leaderboard)
+            {
+                leaderboard.Add(new GetLeaderboardResponse { CustomerId = item.Value.CustomerId, Score = item.Key.Score, Rank = _leaderboard.Keys.ToList().IndexOf(item.Key) + 1 });
+            }
+            return leaderboard;
         }
     }
 }
