@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using Bosai.Interview.Service.Contracts.Leaderboard;
 using Bosai.Interview.Service.Contracts.Leaderboard.Dto;
+using System.Buffers;
 
 namespace Bosai.Interview.Service.Leaderboard
 {
@@ -16,11 +17,13 @@ namespace Bosai.Interview.Service.Leaderboard
         private readonly SortedDictionary<ScoreCustomerKey, (long CustomerId, double Score)> _leaderboard;
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
         private readonly ScoreUpdateQueue _scoreQueue;
+        private readonly ArrayPool<GetLeaderboardResponse> _arrayPool;
         public LeaderboardService()
         {
             _customerScores = new ConcurrentDictionary<long, ScoreCustomerKey>();
             _leaderboard = new SortedDictionary<ScoreCustomerKey, (long CustomerId, double Score)>();
             _scoreQueue = new ScoreUpdateQueue();
+            _arrayPool = ArrayPool<GetLeaderboardResponse>.Shared;
         }
 
         /// <summary>
@@ -91,27 +94,30 @@ namespace Bosai.Interview.Service.Leaderboard
                 {
                     // Calculate the actual score range
                     var startScore = _leaderboard.Keys.ElementAt(leaderboardCount - request.Start.Value);
-
                     var endCount = request.End.Value > leaderboardCount ? 0 : leaderboardCount - request.End.Value;
                     var endScore = _leaderboard.Keys.ElementAt(endCount);
 
                     // Gets customer scores for the specified ranking range
-                    var rankedScores = _leaderboard.Keys.Where(score => score.Score >= endScore.Score && score.Score <= startScore.Score).ToList();
+                    var rankedScores = _leaderboard.Keys.Where(score => score.Score >= endScore.Score && score.Score <= startScore.Score).Reverse().ToList();
 
-                    // Get customer information and return it in ranking order
-                    var result = rankedScores.Select(x => new GetLeaderboardResponse
+                    var responses = _arrayPool.Rent(rankedScores.Count);
+                    try
                     {
-                        CustomerId = _leaderboard[x].CustomerId,
-                        Score = x.Score
-                    }).Reverse().ToList();
-
-
-                    foreach (var item in result)
-                    {
-                        item.Rank = rank;
-                        rank++;
+                        for (int i = 0; i < rankedScores.Count; i++)
+                        {
+                            responses[i] = new GetLeaderboardResponse
+                            {
+                                CustomerId = rankedScores[i].CustomerId,
+                                Score = rankedScores[i].Score,
+                                Rank = rank + i
+                            };
+                        }
+                        return new List<GetLeaderboardResponse>(responses.Where(t => t != null));
                     }
-                    return result;
+                    finally
+                    {
+                        _arrayPool.Return(responses);
+                    }
                 }
                 finally
                 {
